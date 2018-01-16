@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { Constants } from 'expo'
-import { Black, LightWhite } from "./Utils/Colors";
+import {BackgroundColor, Black} from "./Utils/Colors";
+import DeckList from './Components/DeckList'
 
 function AppStatus({backgroundColor, ...props}) {
     return(
@@ -12,21 +13,19 @@ function AppStatus({backgroundColor, ...props}) {
 }
 
 export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-          <AppStatus backgroundColor={Black} barStyle='light-content'/>
-            <Text>Open up App.js to start working on your app!</Text>
-            <Text>Changes you make will automatically reload.</Text>
-            <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={styles.container}>
+                <AppStatus backgroundColor={Black} barStyle='light-content'/>
+                <DeckList/>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: LightWhite
-  },
+    container: {
+        flex: 1,
+        backgroundColor: BackgroundColor,
+    },
 });
