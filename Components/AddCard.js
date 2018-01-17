@@ -2,30 +2,38 @@ import React from 'react';
 import {View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import {BackgroundColor, Black, BlackLight, InputBackground, White} from "../Utils/Colors";
 
-class AddDeck extends React.Component{
+class AddCard extends React.Component{
 
     state={
-      title: ''
+        question: '',
+        answer: ''
     };
 
     render(){
         return(
             <KeyboardAvoidingView behavior='padding' style={Style.container}>
-                    <View style={Style.subContainer}>
-                        <Text style={Style.header}>
-                            What is the Title of your new deck ?
-                        </Text>
-                        <TextInput
-                            value = {this.state.title}
-                            onChangeText = {(title) => this.setState({title})}
-                            style = {Style.Input}
-                            underlineColorAndroid = {White}
-                            placeholder = "Deck Title"
-                        />
-                        <TouchableOpacity style={Style.btn}>
-                            <Text style={Style.btnText}>Submit</Text>
-                        </TouchableOpacity>
-                    </View>
+                <View style={Style.subContainer}>
+                    <Text style={Style.header}>
+                        ADD CARD
+                    </Text>
+                    <TextInput
+                        value = {this.state.question}
+                        onChangeText = {(question) => this.setState({question})}
+                        style = {Style.Input}
+                        underlineColorAndroid = {White}
+                        placeholder = "Question"
+                    />
+                    <TextInput
+                        value = {this.state.answer}
+                        onChangeText = {(answer) => this.setState({answer})}
+                        style = {Style.Input}
+                        underlineColorAndroid = {White}
+                        placeholder = "Answer"
+                    />
+                    <TouchableOpacity style={Style.btn}>
+                        <Text style={Style.btnText}>Submit</Text>
+                    </TouchableOpacity>
+                </View>
             </KeyboardAvoidingView>
         );
     }
@@ -72,4 +80,4 @@ const Style = StyleSheet.create({
     }
 });
 
-export default AddDeck;
+export default AddCard;

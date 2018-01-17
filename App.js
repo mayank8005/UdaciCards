@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import { Constants } from 'expo'
+import {StatusBar, StyleSheet, View} from 'react-native';
+import {Constants} from 'expo'
 import {BackgroundColor, Black, TabColor, White} from "./Utils/Colors";
 import DeckList from './Components/DeckList';
-import { TabNavigator } from 'react-navigation';
-import  AddDeck from './Components/AddDeck';
+import {TabNavigator, StackNavigator} from 'react-navigation';
+import AddDeck from './Components/AddDeck';
+import Deck from "./Components/Deck";
+import AddCard from './Components/AddCard'
 
 function AppStatus({backgroundColor, ...props}) {
     return(
@@ -15,7 +17,7 @@ function AppStatus({backgroundColor, ...props}) {
 }
 
 const Tab = TabNavigator({
-    Deck: {
+    DeckList: {
         screen: DeckList
     },
     AddDeck:{
@@ -37,12 +39,29 @@ const Tab = TabNavigator({
     }
 });
 
+const MainNav = StackNavigator({
+    home: {
+        screen: Tab
+    },
+    deck:{
+        screen: Deck,
+    },
+    addCard:{
+        screen: AddCard
+    }
+},{
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false
+    }
+});
+
 export default class App extends React.Component {
     render() {
         return (
             <View style={styles.container}>
                 <AppStatus backgroundColor={Black} barStyle='light-content'/>
-                <Tab/>
+                <MainNav/>
             </View>
         );
     }
@@ -50,7 +69,6 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: BackgroundColor,
+        flex: 1
     }
 });
