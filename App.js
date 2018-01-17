@@ -7,6 +7,9 @@ import {TabNavigator, StackNavigator} from 'react-navigation';
 import AddDeck from './Components/AddDeck';
 import Deck from "./Components/Deck";
 import AddCard from './Components/AddCard'
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import Reducer from './reducer/index'
 
 function AppStatus({backgroundColor, ...props}) {
     return(
@@ -56,13 +59,17 @@ const MainNav = StackNavigator({
     }
 });
 
+const Store = createStore(Reducer);
+
 export default class App extends React.Component {
     render() {
         return (
-            <View style={styles.container}>
-                <AppStatus backgroundColor={Black} barStyle='light-content'/>
-                <MainNav/>
-            </View>
+            <Provider store={Store}>
+                <View style={styles.container}>
+                    <AppStatus backgroundColor={Black} barStyle='light-content'/>
+                    <MainNav/>
+                </View>
+            </Provider>
         );
     }
 }
