@@ -61,15 +61,10 @@ class Quiz extends React.Component{
       }));
     };
 
-    //navigation to home page
+    //navigation to home page/ deck page
     goHome=()=>{
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'home'})
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+        const backAction = NavigationActions.back();
+        this.props.navigation.dispatch(backAction);
     };
 
     render(){
@@ -102,7 +97,7 @@ class Quiz extends React.Component{
                                 size={30}
                                 color={White}
                             />
-                            <Text style={Style.btnText}>Home</Text>
+                            <Text style={Style.btnText}>Deck</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
