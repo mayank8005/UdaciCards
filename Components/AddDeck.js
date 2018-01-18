@@ -21,7 +21,7 @@ class AddDeck extends React.Component{
             //add desk to db
             addDeckToStorage({title, id, cards: []}).then(()=> {
                 this.props.addDeckToStore(title, id);
-                this.props.navigation.navigate('DeckList');
+                this.props.navigation.navigate('deck', {deckId: id});
             });
             this.setState({title: ''});
         }

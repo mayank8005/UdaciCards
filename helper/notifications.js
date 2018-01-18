@@ -13,6 +13,9 @@ function createNotification() {
     return {
         title: "play card time",
         body: "Please complete the quiz",
+        ios: {
+            sound: true
+        },
         android: {
             sound: true,
             priority: "high",
