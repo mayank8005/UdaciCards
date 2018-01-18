@@ -1,27 +1,123 @@
 import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {BackgroundColor, BlackLight, SubTextColor, White} from "../Utils/Colors";
-import {Ionicons} from '@expo/vector-icons';
+import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons';
+import {NavigationActions} from 'react-navigation'
 
 class Quiz extends React.Component{
     state={
+        ansMode: false,
+        cards: null,
+        noOfCards: 0,
+        solution: false,
+        currentQuestion: 0,
+        correct: 0,
+    };
 
+    componentWillMount(){
+        //initializing variables
+        const cards = this.props.navigation.state.params.cards;
+        const noOfCards = cards.length;
+        this.setState({cards, noOfCards, currentQuestion: 1, solution: (noOfCards===0)});
+    }
+
+    handleCorrect = ()=>{
+      this.setState((state=>({
+          currentQuestion: state.currentQuestion + 1,
+          correct: state.correct + 1,
+          ansMode: false,
+          solution: (state.currentQuestion===state.noOfCards),
+      })));
+    };
+
+    handleIncorrect = ()=>{
+        this.setState((state=>({
+            currentQuestion: state.currentQuestion + 1,
+            ansMode: false,
+            solution: (state.currentQuestion===state.noOfCards),
+        })));
+    };
+
+    toggleQAMode =()=>{
+        if(this.state.ansMode)
+            this.setState({ansMode:false});
+        else
+            this.setState({ansMode:true});
+    };
+
+    retry =()=>{
+      this.setState((state)=>({
+          ansMode: false,
+          cards: state.cards,
+          noOfCards: state.noOfCards,
+          solution: state.noOfCards===0,
+          currentQuestion: 0,
+          correct: 0,
+      }));
+    };
+
+    goHome=()=>{
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'home'})
+            ]
+        });
+        this.props.navigation.dispatch(resetAction);
     };
 
     render(){
+        const {ansMode, cards, currentQuestion, solution, noOfCards, correct} = this.state;
+
+        if(solution){
+            return(
+                <View style={Style.container}>
+                    <View style={Style.subContainer}>
+                        <Text style={Style.solText}>
+                            Congratulations, you have successfully completed the quiz
+                        </Text>
+                        <Text style={Style.solText}>
+                            {noOfCards===0?'No cards saved please save any card to play the quiz'
+                                :`Your Score: ${(correct/noOfCards)*100}%`}
+                        </Text>
+                        <TouchableOpacity style={Style.btn} onPress={this.retry}>
+                            <MaterialCommunityIcons
+                                name='restart'
+                                size={30}
+                                color={White}
+                            />
+                            <Text style={Style.btnText}>Retry !</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={Style.btn} onPress={this.goHome}>
+                            <Ionicons
+                                name='md-home'
+                                size={30}
+                                color={White}
+                            />
+                            <Text style={Style.btnText}>Home</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            );
+        }
+
+        const ques = cards[currentQuestion-1].question;     //current question
+        const ans = cards[currentQuestion-1].answer;        //current answer
+
         return(
             <View style={Style.container}>
                 <View style={Style.subContainer}>
                     <View style={Style.qnaView}>
+                        <Text style={Style.qMeter}>{`${currentQuestion}/${noOfCards}`}</Text>
                         <Text style={Style.qna}>
-                            {`Question: what's my name`}
+                            {ansMode?(`Answer: ${ans}`):(`Question: ${ques}`)}
                         </Text>
-                        <TouchableOpacity>
-                            <Text style={Style.qnaBtn}>Answer</Text>
+                        <TouchableOpacity onPress={this.toggleQAMode}>
+                            <Text style={Style.qnaBtn}>{ansMode?'show question':'show answer'}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={Style.btnView}>
-                        <TouchableOpacity style={Style.btn}>
+                        <TouchableOpacity style={Style.btn} onPress={this.handleCorrect}>
                             <Ionicons
                                 name='md-happy'
                                 size={30}
@@ -29,7 +125,7 @@ class Quiz extends React.Component{
                             />
                             <Text style={Style.btnText}>Correct</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={Style.btn}>
+                        <TouchableOpacity style={Style.btn} onPress={this.handleIncorrect}>
                             <Ionicons
                                 name='md-sad'
                                 size={30}
@@ -53,7 +149,7 @@ const Style = StyleSheet.create({
         backgroundColor: BackgroundColor
     },
     subContainer:{
-        minHeight: 360,
+        minHeight: 500,
         padding: 16,
         margin: 5,
         backgroundColor: BlackLight,
@@ -75,6 +171,12 @@ const Style = StyleSheet.create({
         fontSize:15,
         color: SubTextColor
     },
+    qMeter: {
+        color: SubTextColor,
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
     btnView: {
         flex: 1,
         alignItems: 'center',
@@ -94,7 +196,12 @@ const Style = StyleSheet.create({
     btnText: {
         color: White,
         padding: 10
-    }
+    },
+    solText:{
+        color: White,
+        fontSize: 35,
+        fontWeight: 'bold'
+    },
 });
 
 export default Quiz;

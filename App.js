@@ -54,7 +54,7 @@ const MainNav = StackNavigator({
         screen: AddCard
     },
     quiz:{
-        screen: Quiz
+        screen: Quiz,
     }
 },{
     headerMode: 'none',
@@ -71,7 +71,7 @@ export default class App extends React.Component {
             <Provider store={Store}>
                 <View style={styles.container}>
                     <AppStatus backgroundColor={Black} barStyle='light-content'/>
-                    <Quiz/>
+                    <MainNav/>
                 </View>
             </Provider>
         );

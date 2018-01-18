@@ -10,6 +10,11 @@ class Deck extends React.Component{
         this.props.navigation.navigate('addCard', {deckId});
     });
 
+    StartQuiz = (deckId, cards)=>(()=>{
+        console.log('run');
+        this.props.navigation.navigate('quiz', {deckId, cards});
+    });
+
     render(){
         const {title, id, cards} = this.props.deck;
 
@@ -26,7 +31,7 @@ class Deck extends React.Component{
                             <Entypo name='add-to-list' size={30} color={White} />
                             <Text style={Style.btnText}>Add Cards</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={Style.btn}>
+                        <TouchableOpacity style={Style.btn} onPress={this.StartQuiz(id, cards)}>
                             <MaterialCommunityIcons name='play-box-outline' size={30} color={White}/>
                             <Text style={Style.btnText}>Take Quiz!</Text>
                         </TouchableOpacity>
