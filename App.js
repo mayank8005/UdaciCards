@@ -5,7 +5,7 @@ import {BackgroundColor, Black, TabColor, White} from "./Utils/Colors";
 import DeckList from './Components/DeckList';
 import {TabNavigator, StackNavigator} from 'react-navigation';
 import AddDeck from './Components/AddDeck';
-import Deck from "./Components/Deck";
+import Deck from "./Components/deck";
 import AddCard from './Components/AddCard'
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
