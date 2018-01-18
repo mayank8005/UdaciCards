@@ -4,6 +4,7 @@ import {BackgroundColor, Black, BlackLight, InputBackground, White} from "../Uti
 import {connect} from 'react-redux'
 import {addDeckCreator} from '../actions/index'
 import uuid from 'uuid/v1';
+import {addDeckToStorage} from '../Utils/API'
 
 class AddDeck extends React.Component{
 
@@ -14,14 +15,15 @@ class AddDeck extends React.Component{
     addDeck=()=>{
         //generating RandomId
         const id = uuid();
-
-        //add desk to db
-
+        const title = this.state.title;
         //adding deck to store
-        if(this.state.title){
-            this.props.addDeckToStore(this.state.title, id);
-            this.setState({title:''});
-            this.props.navigation.navigate('DeckList');
+        if(title){
+            //add desk to db
+            addDeckToStorage({title, id, cards: []}).then(()=> {
+                this.props.addDeckToStore(title, id);
+                this.props.navigation.navigate('DeckList');
+            });
+            this.setState({title: ''});
         }
     };
 

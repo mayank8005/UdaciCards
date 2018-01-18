@@ -3,6 +3,7 @@ import {View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableOpacit
 import {BackgroundColor, Black, BlackLight, InputBackground, White} from "../Utils/Colors";
 import {connect} from 'react-redux'
 import {addCardCreator} from '../actions/index'
+import {addCardToStorage} from '../Utils/API'
 
 class AddCard extends React.Component{
 
@@ -13,10 +14,15 @@ class AddCard extends React.Component{
 
     handleAddCard = ()=>{
         const {question, answer} = this.state;
+        const deck = this.props.deck;
+        console.log(deck);
         if(question&&answer){
-            this.props.addCardToStore({question, answer});
+            //adding card to deck
+            deck.cards = [...deck.cards, {question, answer}];
+            addCardToStorage(deck).then(()=>{
+                this.props.navigation.navigate('deck', {deckId:this.props.deckId});
+            });
             this.setState({question:'', answer:''});
-            this.props.navigation.navigate('deck', {deckId:this.props.deckId});
         }
     };
 
@@ -33,6 +39,7 @@ class AddCard extends React.Component{
                         style = {Style.Input}
                         underlineColorAndroid = {White}
                         placeholder = "Question"
+                        maxLength = {30}
                     />
                     <TextInput
                         value = {this.state.answer}
@@ -40,6 +47,7 @@ class AddCard extends React.Component{
                         style = {Style.Input}
                         underlineColorAndroid = {White}
                         placeholder = "Answer"
+                        maxLength = {30}
                     />
                     <TouchableOpacity style={Style.btn} onPress={this.handleAddCard}>
                         <Text style={Style.btnText}>Submit</Text>
@@ -91,12 +99,13 @@ const Style = StyleSheet.create({
     }
 });
 
-function mapDispatchToProps(dispatch, props){
+function mapStateToProps(state, props){
     const deckId = props.navigation.state.params.deckId;
     return{
-        addCardToStore: (card)=>dispatch(addCardCreator(deckId, card)),
+        deck: state.decks.find((deck)=>(deck.id===deckId)),
         deckId: deckId
     }
 }
 
-export default connect(undefined, mapDispatchToProps)(AddCard);
+
+export default connect(mapStateToProps)(AddCard);

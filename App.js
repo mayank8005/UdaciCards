@@ -11,6 +11,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from './reducer/index';
 import Quiz from './Components/Quiz';
+import {setLocalNotification} from './helper/notifications'
 
 function AppStatus({backgroundColor, ...props}) {
     return(
@@ -66,6 +67,9 @@ const MainNav = StackNavigator({
 const Store = createStore(reducer);
 
 export default class App extends React.Component {
+    componentDidMount() {
+        setLocalNotification();
+    }
     render() {
         return (
             <Provider store={Store}>

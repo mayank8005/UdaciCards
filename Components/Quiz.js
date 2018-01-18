@@ -2,7 +2,8 @@ import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {BackgroundColor, BlackLight, SubTextColor, White} from "../Utils/Colors";
 import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons';
-import {NavigationActions} from 'react-navigation'
+import {NavigationActions} from 'react-navigation';
+import {setLocalNotification, clearLocalNotifications} from "../helper/notifications";
 
 class Quiz extends React.Component{
     state={
@@ -70,6 +71,8 @@ class Quiz extends React.Component{
         const {ansMode, cards, currentQuestion, solution, noOfCards, correct} = this.state;
 
         if(solution){
+            //clearing notification
+            clearLocalNotifications().then(setLocalNotification());
             return(
                 <View style={Style.container}>
                     <View style={Style.subContainer}>
@@ -78,7 +81,7 @@ class Quiz extends React.Component{
                         </Text>
                         <Text style={Style.solText}>
                             {noOfCards===0?'No cards saved please save any card to play the quiz'
-                                :`Your Score: ${(correct/noOfCards)*100}%`}
+                                :`Your Score: ${((correct/noOfCards)*100).toPrecision(3)}%`}
                         </Text>
                         <TouchableOpacity style={Style.btn} onPress={this.retry}>
                             <MaterialCommunityIcons
@@ -149,7 +152,7 @@ const Style = StyleSheet.create({
         backgroundColor: BackgroundColor
     },
     subContainer:{
-        minHeight: 500,
+        minHeight: 400,
         padding: 16,
         margin: 5,
         backgroundColor: BlackLight,

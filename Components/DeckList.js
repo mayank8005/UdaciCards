@@ -3,6 +3,8 @@ import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native
 import DeckListItem from './DeckListItem';
 import {BackgroundColor} from "../Utils/Colors";
 import {connect} from 'react-redux'
+import {fetchDecks} from '../Utils/API'
+import {loadDecksCreator} from '../actions/index';
 
 class DeckList extends React.Component{
 
@@ -18,9 +20,17 @@ class DeckList extends React.Component{
       );
     };
 
+    componentWillMount(){
+        fetchDecks().then(decks=>{
+            if(!decks)
+                return;
+            const decksArr = Object.values(decks);
+            this.props.dispatch(loadDecksCreator(decksArr));
+        });
+    }
+
     render(){
         const {decks} = this.props;
-
         return(
             <View style={Style.container}>
               <FlatList
