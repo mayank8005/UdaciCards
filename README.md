@@ -24,3 +24,8 @@ This application is tested in SAMSUNG-SM-N900A and Google nexus
 ## NOTE
 This application is tested in SAMSUNG-SM-N900A and Google nexus 
 >>>>>>> 455acc59257b20ae0580138db3d658dd042fd072
+
+## Some important documentation
+1. [Expo](https://docs.expo.io/versions/latest/index.html)
+2. [react-native](https://facebook.github.io/react-native/docs/getting-started.html)
+3. [react navigation](https://reactnavigation.org/)
