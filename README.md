@@ -14,5 +14,13 @@ Although this is an android app but you can simulate this project using an andro
 3. type `npm install` or `yarn install`
 4. type `npm start` or `yarn start`
 
+<<<<<<< HEAD
 ## NOTE 
 This application is tested in SAMSUNG-SM-N900A and Google nexus 
+||||||| merged common ancestors
+##NOTE
+This application is tested in SAMSUNG-SM-N900A and Google nexus 
+=======
+## NOTE
+This application is tested in SAMSUNG-SM-N900A and Google nexus 
+>>>>>>> 455acc59257b20ae0580138db3d658dd042fd072
