@@ -1,11 +1,28 @@
 import React from 'react';
 import {View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import {BackgroundColor, Black, BlackLight, InputBackground, White} from "../Utils/Colors";
+import {connect} from 'react-redux'
+import {addDeckCreator} from '../actions/index'
+import uuid from 'uuid/v1';
 
 class AddDeck extends React.Component{
 
     state={
       title: ''
+    };
+
+    addDeck=()=>{
+        //generating RandomId
+        const id = uuid();
+
+        //add desk to db
+
+        //adding deck to store
+        if(this.state.title){
+            this.props.addDeckToStore(this.state.title, id);
+            this.setState({title:''});
+            this.props.navigation.navigate('DeckList');
+        }
     };
 
     render(){
@@ -22,7 +39,7 @@ class AddDeck extends React.Component{
                             underlineColorAndroid = {White}
                             placeholder = "Deck Title"
                         />
-                        <TouchableOpacity style={Style.btn}>
+                        <TouchableOpacity style={Style.btn} onPress={this.addDeck}>
                             <Text style={Style.btnText}>Submit</Text>
                         </TouchableOpacity>
                     </View>
@@ -72,4 +89,17 @@ const Style = StyleSheet.create({
     }
 });
 
-export default AddDeck;
+function mapDispatchToProps(dispatch, props){
+    return{
+        ...props,
+        addDeckToStore: (title, id)=>(dispatch(addDeckCreator({title, id, cards:[]})))
+    }
+}
+
+function mapStateToProps(store){
+    return{
+        decks: store.decks
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddDeck);

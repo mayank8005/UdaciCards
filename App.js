@@ -9,7 +9,7 @@ import Deck from "./Components/Deck";
 import AddCard from './Components/AddCard'
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
-import Reducer from './reducer/index'
+import reducer from './reducer/index'
 
 function AppStatus({backgroundColor, ...props}) {
     return(
@@ -59,7 +59,7 @@ const MainNav = StackNavigator({
     }
 });
 
-const Store = createStore(Reducer);
+const Store = createStore(reducer);
 
 export default class App extends React.Component {
     render() {

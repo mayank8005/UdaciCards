@@ -1,12 +1,23 @@
 import React from 'react';
 import {View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import {BackgroundColor, Black, BlackLight, InputBackground, White} from "../Utils/Colors";
+import {connect} from 'react-redux'
+import {addCardCreator} from '../actions/index'
 
 class AddCard extends React.Component{
 
     state={
         question: '',
         answer: ''
+    };
+
+    handleAddCard = ()=>{
+        const {question, answer} = this.state;
+        if(question&&answer){
+            this.props.addCardToStore({question, answer});
+            this.setState({question:'', answer:''});
+            this.props.navigation.navigate('deck', {deckId:this.props.deckId});
+        }
     };
 
     render(){
@@ -30,7 +41,7 @@ class AddCard extends React.Component{
                         underlineColorAndroid = {White}
                         placeholder = "Answer"
                     />
-                    <TouchableOpacity style={Style.btn}>
+                    <TouchableOpacity style={Style.btn} onPress={this.handleAddCard}>
                         <Text style={Style.btnText}>Submit</Text>
                     </TouchableOpacity>
                 </View>
@@ -80,4 +91,12 @@ const Style = StyleSheet.create({
     }
 });
 
-export default AddCard;
+function mapDispatchToProps(dispatch, props){
+    const deckId = props.navigation.state.params.deckId;
+    return{
+        addCardToStore: (card)=>dispatch(addCardCreator(deckId, card)),
+        deckId: deckId
+    }
+}
+
+export default connect(undefined, mapDispatchToProps)(AddCard);

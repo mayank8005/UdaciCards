@@ -2,24 +2,27 @@ import React from 'react';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import {BackgroundColor, Black, BlackLight, SubTextColor, White} from "../Utils/Colors";
 import {Entypo, MaterialCommunityIcons} from '@expo/vector-icons';
+import {connect} from 'react-redux'
 
 class Deck extends React.Component{
 
-    onAddCard = ()=>{
-        this.props.navigation.navigate('addCard');
-    };
+    onAddCard = (deckId)=>(()=>{
+        this.props.navigation.navigate('addCard', {deckId});
+    });
 
     render(){
+        const {title, id, cards} = this.props.deck;
+
         return(
             <View style={Style.container}>
                 <View style={Style.subContainer}>
                     <View style={Style.headerView}>
-                        <Text style={Style.header}>Hello</Text>
-                        <Text style={Style.headerSubtitle}>{`No of cards : 5`}</Text>
+                        <Text style={Style.header}>{title}</Text>
+                        <Text style={Style.headerSubtitle}>{`No of cards : ${cards.length}`}</Text>
                         <MaterialCommunityIcons name='cards-playing-outline' size={50} color={White} />
                     </View>
                     <View style={Style.btnView}>
-                        <TouchableOpacity style={Style.btn} onPress={this.onAddCard}>
+                        <TouchableOpacity style={Style.btn} onPress={this.onAddCard(id)}>
                             <Entypo name='add-to-list' size={30} color={White} />
                             <Text style={Style.btnText}>Add Cards</Text>
                         </TouchableOpacity>
@@ -92,4 +95,11 @@ const Style = StyleSheet.create({
     }
 });
 
-export default Deck;
+function mapStateToProps(store, props){
+    const deckId = props.navigation.state.params.deckId;
+    return{
+        deck: store.decks.find((deck)=>(deck.id===deckId))
+    }
+}
+
+export default connect(mapStateToProps)(Deck);
