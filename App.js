@@ -9,7 +9,8 @@ import Deck from "./Components/Deck";
 import AddCard from './Components/AddCard'
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
-import reducer from './reducer/index'
+import reducer from './reducer/index';
+import Quiz from './Components/Quiz';
 
 function AppStatus({backgroundColor, ...props}) {
     return(
@@ -51,6 +52,9 @@ const MainNav = StackNavigator({
     },
     addCard:{
         screen: AddCard
+    },
+    quiz:{
+        screen: Quiz
     }
 },{
     headerMode: 'none',
@@ -67,7 +71,7 @@ export default class App extends React.Component {
             <Provider store={Store}>
                 <View style={styles.container}>
                     <AppStatus backgroundColor={Black} barStyle='light-content'/>
-                    <MainNav/>
+                    <Quiz/>
                 </View>
             </Provider>
         );
