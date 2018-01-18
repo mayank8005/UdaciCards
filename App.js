@@ -21,6 +21,7 @@ function AppStatus({backgroundColor, ...props}) {
     );
 }
 
+// tab navigator ... contains 2 tabs deck list and add deck
 const Tab = TabNavigator({
     DeckList: {
         screen: DeckList
@@ -44,6 +45,7 @@ const Tab = TabNavigator({
     }
 });
 
+//stack navigator which is responsible for every navigation
 const MainNav = StackNavigator({
     home: {
         screen: Tab

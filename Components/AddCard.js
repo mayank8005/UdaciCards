@@ -12,10 +12,10 @@ class AddCard extends React.Component{
         answer: ''
     };
 
+    //when add card data is submitted
     handleAddCard = ()=>{
         const {question, answer} = this.state;
         const deck = this.props.deck;
-        console.log(deck);
         if(question&&answer){
             //adding card to deck
             deck.cards = [...deck.cards, {question, answer}];

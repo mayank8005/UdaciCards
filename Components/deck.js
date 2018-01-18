@@ -6,12 +6,13 @@ import {connect} from 'react-redux'
 
 class Deck extends React.Component{
 
+    //navigation when user requested to add card
     onAddCard = (deckId)=>(()=>{
         this.props.navigation.navigate('addCard', {deckId});
     });
 
+    //will start quiz
     StartQuiz = (deckId, cards)=>(()=>{
-        console.log('run');
         this.props.navigation.navigate('quiz', {deckId, cards});
     });
 

@@ -1,6 +1,7 @@
 //importing actions
 import {LOAD_DECKS, ADD_CARD, ADD_DECK} from '../actions/index'
 
+//Reducer
 export default function Reducer(state={decks:[]}, action){
 
     switch (action.type){

@@ -22,6 +22,7 @@ class Quiz extends React.Component{
         this.setState({cards, noOfCards, currentQuestion: 1, solution: (noOfCards===0)});
     }
 
+    //when correct button is pressed
     handleCorrect = ()=>{
       this.setState((state=>({
           currentQuestion: state.currentQuestion + 1,
@@ -31,6 +32,7 @@ class Quiz extends React.Component{
       })));
     };
 
+    //when incorrect is pressed
     handleIncorrect = ()=>{
         this.setState((state=>({
             currentQuestion: state.currentQuestion + 1,
@@ -39,6 +41,7 @@ class Quiz extends React.Component{
         })));
     };
 
+    // will toggle question mode and answer mode
     toggleQAMode =()=>{
         if(this.state.ansMode)
             this.setState({ansMode:false});
@@ -46,17 +49,19 @@ class Quiz extends React.Component{
             this.setState({ansMode:true});
     };
 
+    //when user want to restart the quiz
     retry =()=>{
       this.setState((state)=>({
           ansMode: false,
           cards: state.cards,
           noOfCards: state.noOfCards,
           solution: state.noOfCards===0,
-          currentQuestion: 0,
+          currentQuestion: 1,
           correct: 0,
       }));
     };
 
+    //navigation to home page
     goHome=()=>{
         const resetAction = NavigationActions.reset({
             index: 0,
