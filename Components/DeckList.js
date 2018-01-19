@@ -4,12 +4,18 @@ import DeckListItem from './DeckListItem';
 import {BackgroundColor} from "../Utils/Colors";
 import {connect} from 'react-redux'
 import {fetchDecks} from '../Utils/API'
-import {loadDecksCreator} from '../actions/index';
+import {loadDecksCreator, setCurrentDeck} from '../actions/index';
+import {setUpdateFunction} from '../helper/FlatListUpdater'
 
 class DeckList extends React.Component{
 
+    state={
+      decks: []
+    };
+
     onDeckClick = (id)=>(()=> {
-        this.props.navigation.navigate('deck', {deckId: id});
+        this.props.setDeck(id);
+        this.props.navigation.navigate('deck');
     });
 
     renderDeck = (deck)=>{
@@ -20,12 +26,19 @@ class DeckList extends React.Component{
       );
     };
 
+    //this is the function we are passing to set update function of FLAT LIST UPDATER file
+    //every file can access that function to update our function state
+    FlatListUpdaterFunction = (decks)=>{
+        this.setState({decks});
+    };
+
     componentWillMount(){
+        setUpdateFunction(this.FlatListUpdaterFunction);
         fetchDecks().then(decks=>{
             if(!decks)
                 return;
             const decksArr = Object.values(decks);
-            this.props.dispatch(loadDecksCreator(decksArr));
+            this.props.load(decksArr);
         });
     }
 
@@ -36,6 +49,7 @@ class DeckList extends React.Component{
               <FlatList
                 data={decks}
                 renderItem={this.renderDeck}
+                extraData={this.state.decks}
                 keyExtractor={(item, index) => index}
               />
             </View>
@@ -55,9 +69,17 @@ const Style = StyleSheet.create({
 });
 
 function mapStateToProps(store){
+
     return{
         decks: store.decks
     }
 }
 
-export default connect(mapStateToProps)(DeckList);
+function mapDispatchToProps(dispatch, props){
+    return{
+        setDeck: (deckId)=>{dispatch(setCurrentDeck(deckId))},
+        load: (decksArr)=>{dispatch(loadDecksCreator(decksArr))}
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeckList);

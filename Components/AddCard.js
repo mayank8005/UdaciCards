@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import {BackgroundColor, Black, BlackLight, InputBackground, White} from "../Utils/Colors";
-import {connect} from 'react-redux'
-import {addCardCreator} from '../actions/index'
-import {addCardToStorage} from '../Utils/API'
+import {connect} from 'react-redux';
+import {addCardCreator, setCurrentDeck} from '../actions/index';
+import {addCardToStorage} from '../Utils/API';
 
 class AddCard extends React.Component{
 
@@ -20,7 +20,9 @@ class AddCard extends React.Component{
             //adding card to deck
             deck.cards = [...deck.cards, {question, answer}];
             addCardToStorage(deck).then(()=>{
-                this.props.navigation.navigate('deck', {deckId:this.props.deckId});
+                this.props.setDeck(this.props.deckId);
+                this.props.navigation.state.params.reRender();
+                this.props.navigation.goBack();
             });
             this.setState({question:'', answer:''});
         }
@@ -107,5 +109,10 @@ function mapStateToProps(state, props){
     }
 }
 
+function mapDispatchToProps(dispatch){
+    return{
+        setDeck: (deckId)=>{dispatch(setCurrentDeck(deckId))},
+    }
+}
 
-export default connect(mapStateToProps)(AddCard);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCard);

@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import {BackgroundColor, Black, BlackLight, InputBackground, White} from "../Utils/Colors";
 import {connect} from 'react-redux'
-import {addDeckCreator} from '../actions/index'
+import {addDeckCreator, setCurrentDeck} from '../actions/index'
 import uuid from 'uuid/v1';
 import {addDeckToStorage} from '../Utils/API'
 
@@ -21,7 +21,8 @@ class AddDeck extends React.Component{
             //add desk to db
             addDeckToStorage({title, id, cards: []}).then(()=> {
                 this.props.addDeckToStore(title, id);
-                this.props.navigation.navigate('deck', {deckId: id});
+                this.props.setDeck(id);
+                this.props.navigation.navigate('deck');
             });
             this.setState({title: ''});
         }
@@ -94,7 +95,8 @@ const Style = StyleSheet.create({
 function mapDispatchToProps(dispatch, props){
     return{
         ...props,
-        addDeckToStore: (title, id)=>(dispatch(addDeckCreator({title, id, cards:[]})))
+        addDeckToStore: (title, id)=>(dispatch(addDeckCreator({title, id, cards:[]}))),
+        setDeck: (deckId)=>{dispatch(setCurrentDeck(deckId))}
     }
 }
 

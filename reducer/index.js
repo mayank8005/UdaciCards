@@ -1,8 +1,8 @@
 //importing actions
-import {LOAD_DECKS, ADD_CARD, ADD_DECK} from '../actions/index'
+import {LOAD_DECKS, ADD_CARD, ADD_DECK, SET_CURRENT_DECK} from '../actions/index'
 
 //Reducer
-export default function Reducer(state={decks:[]}, action){
+export default function Reducer(state={decks:[], deckId:null}, action){
 
     switch (action.type){
         case LOAD_DECKS:
@@ -24,6 +24,11 @@ export default function Reducer(state={decks:[]}, action){
                   }
                   return deck;
                 })
+            };
+        case SET_CURRENT_DECK:
+            return{
+                ...state,
+                deckId: action.deckId
             };
         default:
             return state;

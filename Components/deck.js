@@ -3,13 +3,20 @@ import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import {BackgroundColor, Black, BlackLight, SubTextColor, White} from "../Utils/Colors";
 import {Entypo, MaterialCommunityIcons} from '@expo/vector-icons';
 import {connect} from 'react-redux'
+import {update} from '../helper/FlatListUpdater'
 
 class Deck extends React.Component{
 
     //navigation when user requested to add card
     onAddCard = (deckId)=>(()=>{
-        this.props.navigation.navigate('addCard', {deckId});
+        this.props.navigation.navigate('addCard', {deckId, reRender: this.reRender});
     });
+
+    //this function re-render the component
+    reRender = ()=>{
+        update(this.props.decks);
+        this.forceUpdate();
+    };
 
     //will start quiz
     StartQuiz = (deckId, cards)=>(()=>{
@@ -102,9 +109,10 @@ const Style = StyleSheet.create({
 });
 
 function mapStateToProps(store, props){
-    const deckId = props.navigation.state.params.deckId;
+    const deckId = store.deckId;
     return{
-        deck: store.decks.find((deck)=>(deck.id===deckId))
+        deck: store.decks.find((deck)=>(deck.id===deckId)),
+        decks: store.decks,
     }
 }
 
